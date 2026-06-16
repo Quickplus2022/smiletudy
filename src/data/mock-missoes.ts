@@ -1,0 +1,66 @@
+import type { Missao } from "@/types";
+
+export const MOCK_MISSOES: Missao[] = [
+  {
+    id: "m1",
+    titulo: "Portal dos Códigos — Equações",
+    materia: "Matemática",
+    mundo: "Portal dos Códigos",
+    duracao: 15,
+    xp: 20,
+    objetivo: "Revisar equações do 1º grau da agenda de hoje",
+    modo: "chill",
+    status: "pendente",
+  },
+  {
+    id: "m2",
+    titulo: "Script Room — Redação Livre",
+    materia: "Redação",
+    mundo: "Script Room",
+    duracao: 15,
+    xp: 15,
+    objetivo: "Escrever um parágrafo introdutório sobre o tema da semana",
+    modo: "anime",
+    status: "pendente",
+  },
+  {
+    id: "m3",
+    titulo: "Arena Global — Vocabulário",
+    materia: "Bilíngue",
+    mundo: "Arena Global",
+    duracao: 10,
+    xp: 10,
+    objetivo: "Revisar as 10 palavras do comunicado de inglês",
+    modo: "chill",
+    status: "pendente",
+  },
+];
+
+export const MOCK_COMUNICADOS = [
+  {
+    id: "mock-001",
+    url: "#",
+    titulo_lista: "SEGUNDA-FEIRA, 8° ANO 3 — Agenda diária",
+    data_detectada: new Date().toISOString().split("T")[0],
+    dias_desde_publicacao: 0,
+    coletado_em: new Date().toISOString(),
+    tipo_estimado: "agenda",
+    materia_estimada: "Matemática; Bilíngue; História",
+    tamanho_texto: 500,
+    texto: "Boa tarde! Segue agenda diária. Tarefa de Matemática pág. 42. Revisão de inglês para sexta.",
+    arquivo_imagem_agenda: null,
+  },
+  {
+    id: "mock-002",
+    url: "#",
+    titulo_lista: "COMUNICADO — SIMULADO CAMBRIDGE ENGLISH",
+    data_detectada: new Date(Date.now() - 86400000).toISOString().split("T")[0],
+    dias_desde_publicacao: 1,
+    coletado_em: new Date().toISOString(),
+    tipo_estimado: "importante",
+    materia_estimada: "Bilíngue",
+    tamanho_texto: 300,
+    texto: "Simulado Cambridge English acontecerá na próxima sexta-feira. Prepare o vocabulário das unidades 5 e 6.",
+    arquivo_imagem_agenda: null,
+  },
+];
