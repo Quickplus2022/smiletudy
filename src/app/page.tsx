@@ -9,7 +9,23 @@ import { useMissoes } from "@/hooks/useMissoes";
 import { TENANT_JULIA } from "@/data/tenant-julia";
 import { MOCK_MISSOES, MOCK_COMUNICADOS } from "@/data/mock-missoes";
 import { GRADE_JULIA } from "@/data/grade-julia";
+import { getAvaliacoesProximas } from "@/data/avaliacoes-julia";
 import type { Missao } from "@/types";
+
+const COR_URGENCIA = {
+  critica: "border-red-500 bg-red-500/10 text-red-400",
+  alta: "border-orange-500 bg-orange-500/10 text-orange-400",
+  media: "border-yellow-500 bg-yellow-500/10 text-yellow-400",
+  baixa: "border-border bg-card text-muted",
+};
+
+function diasAteLabel(data: string): string {
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const d = Math.ceil((new Date(data+"T00:00:00").getTime() - hoje.getTime()) / 86400000);
+  if (d === 0) return "HOJE";
+  if (d === 1) return "amanhã";
+  return `em ${d} dias`;
+}
 
 const MODOS = [
   { id: "idol", label: "Idol Mode", emoji: "🎤", desc: "45 min" },
@@ -131,6 +147,7 @@ export default function HomePage() {
   const xpTotal = missoes.reduce((acc, m) => acc + m.xp, 0);
   const contexto = getContextoDia();
   const plano = buildPlanoDia(missoes);
+  const avaliacoes = getAvaliacoesProximas(10);
 
   function handleStartOnboarding() {
     concluirOnboarding();
@@ -184,6 +201,37 @@ export default function HomePage() {
             </div>
           </NeonCard>
         </section>
+
+        {/* Alerta AG */}
+        {avaliacoes.some(a => a.urgencia === "critica") && (
+          <section>
+            <div className="rounded-2xl border border-red-500/50 bg-red-500/10 px-5 py-4">
+              <p className="text-xs font-bold text-red-400 uppercase tracking-widest mb-2">⚠️ AG começando em 3 dias!</p>
+              <p className="text-sm text-red-300">Redação + Paradidático <span className="font-bold">"Olhos para Mariella"</span> na sexta-feira 19/06. Foco total!</p>
+            </div>
+          </section>
+        )}
+
+        {/* Provas próximas */}
+        {avaliacoes.length > 0 && (
+          <section>
+            <h2 className="text-sm font-semibold text-muted uppercase tracking-widest mb-3">Provas próximas</h2>
+            <div className="space-y-2">
+              {avaliacoes.map((av) => (
+                <div key={av.id} className={`rounded-xl border px-4 py-3 flex items-start gap-3 ${COR_URGENCIA[av.urgencia]}`}>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-xs font-bold uppercase">{av.tipo}</span>
+                      <span className="text-xs font-semibold">{av.materia}</span>
+                    </div>
+                    <p className="text-xs mt-0.5 opacity-80">{av.conteudos[0]}{av.conteudos.length > 1 ? ` +${av.conteudos.length - 1}` : ""}</p>
+                  </div>
+                  <span className="text-xs font-bold whitespace-nowrap shrink-0">{diasAteLabel(av.data)}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Plano do dia */}
         <section>
