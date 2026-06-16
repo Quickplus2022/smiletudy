@@ -7,7 +7,6 @@ const NAV = [
   { href: "/missoes", label: "Missões", icon: "🎯" },
   { href: "/classapp", label: "ClassApp", icon: "📋" },
   { href: "/semana", label: "Semana", icon: "🗺️" },
-  { href: "/pais", label: "Pais", icon: "👥" },
 ];
 
 export default function Navbar() {
@@ -40,14 +39,6 @@ export default function Navbar() {
             );
           })}
         </nav>
-        <div className="p-4 border-t border-border">
-          <Link
-            href="/config"
-            className="flex items-center gap-2 text-xs text-muted hover:text-ink transition-colors"
-          >
-            <span>⚙️</span> Config
-          </Link>
-        </div>
       </aside>
 
       {/* Mobile bottom nav */}

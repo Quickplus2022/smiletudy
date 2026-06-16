@@ -20,6 +20,11 @@ export default function ClassAppPage() {
         <p className="text-muted text-sm mt-1">{comunicados.length} comunicados coletados</p>
       </header>
 
+      <div className="rounded-xl border border-secondary/30 bg-secondary/5 px-4 py-3 text-sm text-secondary flex items-center gap-2">
+        <span>⚡</span>
+        <span>Cada comunicado vira uma missao obrigatoria automaticamente na aba Missoes.</span>
+      </div>
+
       <div className="space-y-4">
         {comunicados.map((c) => (
           <NeonCard key={c.id} glow="pink">
@@ -31,6 +36,7 @@ export default function ClassAppPage() {
               <div className="flex flex-col gap-1 items-end">
                 <Badge label={c.tipo_estimado} color={tipoBadge(c.tipo_estimado)} />
                 {c.dias_desde_publicacao === 0 && <Badge label="Novo hoje" color="pink" />}
+                <Badge label="Missao obrigatoria" color="warn" />
               </div>
             </div>
 
@@ -46,7 +52,7 @@ export default function ClassAppPage() {
 
             {c.arquivo_imagem_agenda && (
               <div className="mt-4">
-                <p className="text-xs text-muted mb-2">📸 Imagem da agenda</p>
+                <p className="text-xs text-muted mb-2">Imagem da agenda</p>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={`/api/imagem-agenda?path=${encodeURIComponent(c.arquivo_imagem_agenda as string)}`}
@@ -55,12 +61,6 @@ export default function ClassAppPage() {
                 />
               </div>
             )}
-
-            <div className="mt-4 pt-3 border-t border-border flex gap-2">
-              <button className="px-3 py-1.5 rounded-lg bg-primary/20 border border-primary/40 text-primary text-xs hover:bg-primary/30 transition-colors">
-                ⚡ Transformar em missão
-              </button>
-            </div>
           </NeonCard>
         ))}
       </div>
