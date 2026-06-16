@@ -2,7 +2,7 @@
 import { usePathname } from "next/navigation";
 import Navbar from "./Navbar";
 
-const ADMIN_ROUTES = ["/pais", "/master", "/login", "/esqueci-senha", "/resetar-senha"];
+const ADMIN_ROUTES = ["/pais", "/master", "/login", "/cadastro", "/esqueci-senha", "/resetar-senha"];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

@@ -7,43 +7,85 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Tenant {
+  id         String    @id @default(cuid())
+  slug       String    @unique
+  nome       String
+  aluna      String
+  escola     String
+  serie      String
+  turma      String
+  turno      String    @default("manha")
+  tema       String    @default("kpop")
+  ativo      Boolean   @default(true)
+  criado_em  DateTime  @default(now())
+  usuarios   Usuario[]
+}
+
+model Usuario {
+  id           String        @id @default(cuid())
+  nome         String
+  email        String        @unique
+  senha_hash   String
+  role         String        @default("ALUNA")
+  tenant_id    String?
+  ativo        Boolean       @default(true)
+  criado_em    DateTime      @default(now())
+  tenant       Tenant?       @relation(fields: [tenant_id], references: [id])
+  tokens_reset TokenReset[]
+
+  @@index([email])
+  @@index([tenant_id])
+}
+
+model TokenReset {
+  id         String   @id @default(cuid())
+  usuario_id String
+  token      String   @unique
+  expira_em  DateTime
+  usado      Boolean  @default(false)
+  usuario    Usuario  @relation(fields: [usuario_id], references: [id])
+
+  @@index([token])
+}
+
 model Comunicado {
-  id              String   @id
-  tenant_id       String   @default("julia_ari_8ano_2026")
-  titulo          String   @db.VarChar(500)
-  data_detectada  String   @db.VarChar(10)
-  tipo            String   @db.VarChar(50)
-  materia         String   @db.VarChar(300)
-  texto           String   @db.Text
-  imagem_url      String?  @db.VarChar(500)
-  criado_em       DateTime @default(now())
+  id             String   @id
+  tenant_id      String   @default("julia_ari_8ano_2026")
+  titulo         String   @db.VarChar(500)
+  data_detectada String   @db.VarChar(10)
+  tipo           String   @db.VarChar(50)
+  materia        String   @db.VarChar(300)
+  texto          String   @db.Text
+  imagem_url     String?  @db.VarChar(500)
+  criado_em      DateTime @default(now())
 
   @@index([tenant_id, data_detectada])
 }
 
 model Missao {
-  id          String   @id @default(cuid())
-  tenant_id   String   @default("julia_ari_8ano_2026")
-  titulo      String   @db.VarChar(200)
-  materia     String   @db.VarChar(100)
-  mundo       String   @db.VarChar(100)
-  duracao     Int
-  xp          Int
-  objetivo    String   @db.VarChar(500)
-  modo        String   @db.VarChar(20)
-  data        String   @db.VarChar(10)
-  criado_em   DateTime @default(now())
+  id        String   @id @default(cuid())
+  tenant_id String   @default("julia_ari_8ano_2026")
+  titulo    String   @db.VarChar(200)
+  materia   String   @db.VarChar(100)
+  mundo     String   @db.VarChar(100)
+  duracao   Int
+  xp        Int
+  objetivo  String   @db.VarChar(500)
+  modo      String   @db.VarChar(20)
+  data      String   @db.VarChar(10)
+  criado_em DateTime @default(now())
 
   @@index([tenant_id, data])
 }
 
 model Progresso {
-  id          String   @id @default(cuid())
-  tenant_id   String
-  data        String   @db.VarChar(10)
-  xp_ganho    Int      @default(0)
-  missoes_ids String   @db.Text
-  atualizado  DateTime @updatedAt
+  id         String   @id @default(cuid())
+  tenant_id  String
+  data       String   @db.VarChar(10)
+  xp_ganho   Int      @default(0)
+  missoes_ids String  @db.Text
+  atualizado DateTime @updatedAt
 
   @@unique([tenant_id, data])
 }
